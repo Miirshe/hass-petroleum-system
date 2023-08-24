@@ -131,7 +131,7 @@ function displayData() {
                 response.forEach(res => {
 
                     tr += '<tr>';
-                    th = '<>';
+                    th = '<tr>';
 
                     for (let i in res) {
 
@@ -251,6 +251,7 @@ function fetch_single_user_info(id) {
 $("#tableData tbody").on("click", "a.update_info", function() {
 
     let id = $(this).attr("update_id");
+    console.log("id", id);
     showModal();
     fetch_single_user_info(id);
 
