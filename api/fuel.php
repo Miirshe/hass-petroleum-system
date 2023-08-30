@@ -72,6 +72,7 @@ function read_all_fuel_api($db){
 	echo json_encode($message);
 
 }
+
 function read_single_fuel_api($db){
 
 
