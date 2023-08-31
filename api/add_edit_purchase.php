@@ -154,7 +154,7 @@ function update_purchase_api($db){
 	$result = $db->query($query);
 
 	if($result){
-		$message = array('status' => true , 'data' => 'successfully registered');
+		$message = array('status' => true , 'data' => 'successfully updated');
 	}else{
 		$message = array('status' => false , 'data' => $db->error);
 	}

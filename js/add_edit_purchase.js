@@ -9,107 +9,6 @@ $("#closeModal").on("click", function() {
     window.location.href = '/pages/purchase.php';
 })
 
-loadData();
-
-function loadData() {
-
-    let sendingData = {
-        "action": "read_all_purchase_api"
-    }
-
-    $.ajax({
-        method: 'POST',
-        dataType: 'json',
-        url: '../api/add_edit_purchase.php',
-        data: sendingData,
-        success: function(data) {
-
-            let status = data.status;
-            let response = data.data;
-            let th = '';
-            let tr = '';
-
-            if (status) {
-
-                response.forEach(res => {
-
-                    th = '<tr>';
-                    tr += '<tr>';
-
-                    for (let i in res) {
-
-                        th += `<th>${i}</th>`;
-
-                    }
-
-                    th += '<th>Action</th>';
-                    th += '</tr>';
-
-
-                    for (let i in res) {
-
-                        tr += `<td>${res[i]}</td>`;
-
-                    }
-
-                    tr += `
-                    <td>
-                    <a class=" btn btn-success text-white update_info" update_id="${res['id']}"><i class="fas fa-edit"></i></a>
-                    <a class=" btn btn-danger text-white delete_info" delete_id="${res['id']}"><i class="fas fa-trash"></i></a>
-                    </td>
-                    `;
-                    tr += '</tr>';
-
-                });
-            }
-
-            $("#tableData thead").append(th);
-            $("#tableData tbody").append(tr);
-
-        },
-        error: function(data) {
-            console.log(data.responseText);
-        }
-    })
-}
-
-function delete_purchase_info(id) {
-
-    let sendingData = {
-        "action": "delete_purchase_api",
-        "id": id
-    }
-
-    $.ajax({
-        method: 'POST',
-        dataType: 'json',
-        url: '../api/add_edit_purchase.php',
-        data: sendingData,
-        success: function(data) {
-
-            let status = data.status;
-            let response = data.data;
-
-            if (status) {
-                alert(response);
-                loadData();
-            } else {
-                alert(response);
-            }
-        },
-        error: function(data) {
-            console.log(data.responseText);
-        }
-    })
-}
-
-$("#tableData tbody").on("click", "a.delete_info", function() {
-    let id = $(this).attr("delete_id");
-    if (confirm("are you sure you want to delete ?")) {
-        delete_purchase_info(id);
-    }
-})
-
 function resetForm() {
     $("#purchaseForm")[0].reset();
 }
@@ -121,7 +20,9 @@ function clearSupplierOption() {
 function clearFuelTypeOption() {
     $("#fuel_type").html('');
 }
+
 read_all_supplier_select_options();
+
 read_all_fuel_type_select_options();
 
 function read_all_supplier_select_options() {
@@ -321,6 +222,7 @@ $("#purchaseForm").on("submit", function(e) {
             "price_per_litter": price_per_litter,
             "total_price": total_price,
             "status": status,
+            "action": "update_purchase_api"
         }
     }
 
@@ -335,6 +237,7 @@ $("#purchaseForm").on("submit", function(e) {
 
             if (status) {
                 displayMessage('success', response);
+                btnAction = 'insert'
             } else {
                 displayMessage('error', response);
             }
@@ -362,3 +265,144 @@ function displayMessage(type, message) {
         error.innerHTML = message;
     }
 }
+
+loadData();
+
+function loadData() {
+
+    let sendingData = {
+        "action": "read_all_purchase_api"
+    }
+
+    $.ajax({
+        method: 'POST',
+        dataType: 'json',
+        url: '../api/add_edit_purchase.php',
+        data: sendingData,
+        success: function(data) {
+
+            let status = data.status;
+            let response = data.data;
+            let th = '';
+            let tr = '';
+
+            if (status) {
+
+                response.forEach(res => {
+
+                    th = '<tr>';
+                    tr += '<tr>';
+
+                    for (let i in res) {
+
+                        th += `<th>${i}</th>`;
+
+                    }
+
+                    th += '<th>Action</th>';
+                    th += '</tr>';
+
+
+                    for (let i in res) {
+
+                        tr += `<td>${res[i]}</td>`;
+
+                    }
+
+                    tr += `
+                    <td>
+                    <a href='/pages/add_edit_purchase.php?id=${res['id']}' class=" btn btn-success p-2 rounded text-white update_info" update_id="${res['id']}"><i class="fas fa-edit"></i></a>
+                    <a class=" btn btn-danger p-2 rounded text-white delete_info" delete_id="${res['id']}"><i class="fas fa-trash"></i></a>
+                    </td>
+                    `;
+                    tr += '</tr>';
+
+                });
+            }
+
+            $("#tableData thead").append(th);
+            $("#tableData tbody").append(tr);
+
+        },
+        error: function(data) {
+            console.log(data.responseText);
+        }
+    })
+}
+
+function delete_purchase_info(id) {
+
+    let sendingData = {
+        "action": "delete_purchase_api",
+        "id": id
+    }
+
+    $.ajax({
+        method: 'POST',
+        dataType: 'json',
+        url: '../api/add_edit_purchase.php',
+        data: sendingData,
+        success: function(data) {
+
+            let status = data.status;
+            let response = data.data;
+
+            if (status) {
+                alert(response);
+                loadData();
+            } else {
+                alert(response);
+            }
+        },
+        error: function(data) {
+            console.log(data.responseText);
+        }
+    })
+}
+
+$("#tableData tbody").on("click", "a.delete_info", function() {
+    let id = $(this).attr("delete_id");
+    if (confirm("are you sure you want to delete ?")) {
+        delete_purchase_info(id);
+    }
+})
+
+function fetch_single_purchase_info(id) {
+    let sendingData = {
+        "action": "read_single_purchase_api",
+        "id": id
+    };
+
+    $.ajax({
+        method: 'POST',
+        dataType: 'JSON',
+        url: '../api/add_edit_purchase.php',
+        data: sendingData,
+        success: function(data) {
+            let status = data.status;
+            let response = data.data;
+            console.log("response : ", response);
+            if (status) {
+
+                $("#id").val(response[0].id);
+                $("#supplier_name").val(response[0].s_name);
+                $("#supplier_phone").val(response[0].s_phone);
+                $("#supplier_address").val(response[0].s_address);
+                $("#fuel_type").val(response[0].f_type);
+                $("#tunk_number").val(response[0].t_number);
+                $("#tunk_capacity").val(response[0].t_capacity);
+                $("#litters").val(response[0].litters);
+                $("#price_per_litter").val(response[0].p_per_litter);
+                $("#total_price").val(response[0].t_price);
+                $("#status").val(response[0].status);
+                btnAction = 'update';
+
+            }
+        },
+        error: function(data) {
+            console.log(data.responseText);
+        }
+    })
+}
+const purchaseId = $("#id").val();
+fetch_single_purchase_info(purchaseId);

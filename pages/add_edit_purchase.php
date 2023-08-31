@@ -3,6 +3,14 @@ include './header.php';
 include './navbar.php';
 include './sidebar.php';
 ?>
+
+<?php 
+if(isset($_GET['id'])){
+  $id = $_GET['id'];
+}else{
+  $id = '';
+}
+?>
 <div class="dashboard-wrapper">
 <div class="container-fluid  dashboard-content">
 <div class="row">
@@ -38,7 +46,7 @@ include './sidebar.php';
              </div>
             </div>
 			<div class="form-group">
-                <input id="id" name="id" type="text" class="form-control p-3">
+                <input id="id" name="id" value="<?php echo $id ?>" type="text" class="form-control p-3">
                 </div>
 				<div class="row">
 					<div class="col-sm-4">
