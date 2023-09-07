@@ -63,24 +63,16 @@ $("#userForm").on("submit", (e) => {
         processData: false,
         data: form_data,
         success: function(data) {
-
             let status = data.status;
             let response = data.data;
-
             if (status) {
-
                 displayMessage('success', response);
-
             } else {
-
                 displayMessage('error', response);
-
             }
         },
         error: function(data) {
-
             displayMessage('error', data.responseText);
-
         }
     })
 })
